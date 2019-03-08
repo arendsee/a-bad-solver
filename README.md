@@ -16,7 +16,13 @@ problems with a bias towards type systems.
 
 ## Inspiration
 
-I started from the material Andrew Gibiansky blog [1].
+I started from the material Andrew Gibiansky blog [1]. This was used in the
+implementation of the SAT solver.
+
+I also want to write an SMT solver. [2] shows an example of the use of an SMT
+solver in compiler optimization. This might be a good place to continue.
 
 [1] Andrew Gibiansky (2015) Writing a SAT solver.
     http://andrew.gibiansky.com/blog/verification/writing-a-sat-solver/
+
+[2] https://www.well-typed.com/blog/2014/12/simple-smt-solver/
