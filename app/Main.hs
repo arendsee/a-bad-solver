@@ -3,4 +3,5 @@ module Main where
 import BadSolver
 
 main :: IO ()
-main = someFunc
+main = do
+  print $ satisfiable (And (Var 'x') (Not (Var 'x')))
