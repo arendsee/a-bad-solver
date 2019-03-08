@@ -13,3 +13,10 @@ a priority.
 I will start with a simple SAT solver. I may then move on to implementing
 a more general SMT solver. As I go, I will play with case studies for solving
 problems with a bias towards type systems.
+
+## Inspiration
+
+I started from the material Andrew Gibiansky blog [1].
+
+[1] Andrew Gibiansky (2015) Writing a SAT solver.
+    http://andrew.gibiansky.com/blog/verification/writing-a-sat-solver/
