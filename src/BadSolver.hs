@@ -2,6 +2,7 @@ module BadSolver
 (
     satisfiable
   , simplify
+  , normalize
   , Expr(..)
 ) where
 
@@ -42,6 +43,43 @@ guess c v (And x y) = And (guess c v x) (guess c v y)
 guess c v (Or x y) = Or (guess c v x) (guess c v y)
 guess c v (Not x) = Not (guess c v x)
 guess _ _ (Const x) = Const x
+
+normalize :: Expr -> Expr
+normalize e
+  | e' == e = e
+  | otherwise = normalize e'
+  where
+    e' = normalize' e
+
+normalize' :: Expr -> Expr
+-- remove double negatives
+normalize' (Not (Not x)) = normalize' x
+-- simplify negated constants
+normalize' (Not (Const b)) = Const (not b)
+-- De Morgan laws
+-- 1. !(x || y) == !x && !y
+normalize' (Not (Or x y)) = And (Not x') (Not y') where
+  x' = normalize' x
+  y' = normalize' y
+-- 2. !(x && y) == !x || !y
+normalize' (Not (And x y)) = Or (Not x') (Not y') where
+  x' = normalize' x
+  y' = normalize' y
+-- Distribute OR
+-- x || (y && z) == (x || y) && (x || z)
+normalize' (Or x (And y z)) = And (Or x' y') (Or x' z') where
+  x' = normalize' x
+  y' = normalize' y
+  z' = normalize' z
+normalize' (Or (And y z) x) = And (Or y' x') (Or z' x') where
+  x' = normalize' x
+  y' = normalize' y
+  z' = normalize' z
+normalize' (Or x y) = Or (normalize' x) (normalize' y)
+normalize' (And x y) = And (normalize' x) (normalize' y)
+normalize' (Not x) = Not (normalize' x)
+normalize' (Var c) = Var c
+normalize' (Const b) = Const b
 
 -- simplify an expression
 simplify :: Expr -> Expr
